@@ -124,7 +124,8 @@ int main() {
 
     printf("Load sections\n");
     DWORD sections = getSectionsRaw(simplePE);
-    for (int i = 0; i < 3; i++) {
+    WORD numberOfSections = *(simplePE.begin() + getElfanew(simplePE) + 4 + 2); // bug. dosn't work if both bytes of NumbereOfSections are siginificant
+    for (int i = 0; i < numberOfSections; i++) {
         DWORD sectionOffset = sections + i * 0x28 /*size of section*/;
         DWORD sectionRva = readDword(simplePE, DWORD(sectionOffset + 0xC /*rva*/));
         DWORD rawSize = readDword(simplePE, DWORD(sectionOffset + 0x8));
